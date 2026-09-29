@@ -1,0 +1,177 @@
+// Prisma Schema for VyaparHub B2B Platform
+// Default provider: "sqlite" for zero-config local testing.
+// To switch to PostgreSQL / Supabase:
+// 1. Change provider to "postgresql"
+// 2. Set DATABASE_URL to your Supabase PostgreSQL connection string in .env
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id               String        @id
+  sku              String        @unique
+  barcode          String?
+  hsnCode          String?       @default("2106")
+  gstRate          Int           @default(5) // GST %, per HSN slab (0/5/12/18/28) - set per product
+  name             String
+  category         String
+  description      String        @default("")
+  wholesalePrice   Float
+  mrp              Float
+  moq              Int           @default(1)
+  packSize         String
+  stockQty         Int           @default(0)
+  inStock          Boolean       @default(true)
+  imageUrl         String
+  regionPopularity String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  tiers            PricingTier[]
+  orderItems       OrderItem[]
+}
+
+model PricingTier {
+  id           String  @id @default(cuid())
+  productId    String
+  minQty       Int
+  pricePerUnit Float
+  label        String?
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model Customer {
+  id               String        @id
+  name             String
+  businessName     String
+  phone            String
+  email            String        @default("")
+  state            String
+  city             String
+  address          String        @default("")
+  gstNumber        String?
+  creditLimit      Float
+  outstandingDebt  Float         @default(0)
+  avatarUrl        String?
+  lastReminderSent String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  orders           Order[]
+  ledgerEntries    LedgerEntry[]
+  user             User?
+}
+
+model Order {
+  id                    String      @id
+  orderNumber           String      @unique
+  customerId            String?
+  customerName          String
+  customerPhone         String
+  businessName          String
+  state                 String
+  city                  String
+  subtotal              Float
+  taxAmount             Float
+  discountAmount        Float       @default(0)
+  totalAmount           Float
+  paymentMode           String
+  paymentStatus         String
+  orderStatus           String
+  notes                 String?
+  createdAt             DateTime    @default(now())
+  upiReference          String?
+  upiProofNote          String?
+  verifiedAt            String?
+  rejectionReason       String?
+  deliveryChallanNumber String?
+  bookedBy              String?
+  taxType               String?     @default("INTRA_STATE")
+  cgstAmount            Float?      @default(0)
+  sgstAmount            Float?      @default(0)
+  igstAmount            Float?      @default(0)
+  ewayBillNumber        String?
+  ewayBillValidUntil    String?
+  transporterId         String?
+  transporterName       String?
+  vehicleNumber         String?
+  items                 OrderItem[]
+  customer              Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([customerId])
+}
+
+model OrderItem {
+  id                  String   @id @default(cuid())
+  orderId             String
+  productId           String?
+  productName         String
+  sku                 String
+  hsnCode             String?
+  gstRate             Int      @default(5)
+  wholesalePrice      Float
+  quantity            Int
+  dispatchedQuantity  Int?     @default(0)
+  backorderedQuantity Int?     @default(0)
+  packSize            String
+  totalPrice          Float
+  order               Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product             Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model LedgerEntry {
+  id              String    @id
+  customerId      String?
+  customerName    String
+  businessName    String
+  type            String
+  amount          Float
+  runningBalance  Float
+  paymentMode     String
+  referenceNumber String?
+  notes           String?
+  date            DateTime  @default(now())
+  agingStatus     String?   @default("CURRENT")
+  customer        Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([customerId])
+}
+
+model DealerProfile {
+  id           String @id @default("dealer-main")
+  name         String
+  businessName String
+  tagline      String
+  phone        String
+  email        String
+  address      String
+  gstin        String
+  upiId        String
+  upiName      String
+  bankAccount  String
+  ifscCode     String
+  bankName     String
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  phone        String    @unique
+  password     String
+  role         String    @default("RETAILER") // "RETAILER" | "DEALER" | "SALES_REP"
+  customerId   String?   @unique
+  customer     Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  avatarUrl    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
