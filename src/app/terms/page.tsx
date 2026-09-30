@@ -26,7 +26,7 @@ export default function TermsPage() {
           <h2 className="font-bold text-base mb-2">1. Acceptance</h2>
           <p>
             By registering as a retailer on this platform, you agree to these Terms of Trade with{' '}
-            <b>{dealerProfile.businessName || '[Your Business Name]'}</b> ("we", "us", "the dealer").
+            <b>{dealerProfile.businessName || '[Your Business Name]'}</b> (&quot;we&quot;, &quot;us&quot;, &quot;the dealer&quot;).
           </p>
         </section>
 

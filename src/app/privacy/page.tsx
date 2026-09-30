@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="font-bold text-base mb-2">1. Who we are</h2>
           <p>
-            This Privacy Policy explains how <b>{dealerProfile.businessName || '[Your Business Name]'}</b> ("we", "us")
+            This Privacy Policy explains how <b>{dealerProfile.businessName || '[Your Business Name]'}</b> (&quot;we&quot;, &quot;us&quot;)
             collects, uses, and protects information when retailers use this platform to place wholesale orders.
           </p>
         </section>

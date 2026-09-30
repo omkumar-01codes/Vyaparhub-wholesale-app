@@ -220,7 +220,7 @@ export default function SalesmanPortalPage() {
             <span className="text-base font-extrabold">{dailyStats.ordersCount}</span>
           </div>
           <div className="text-center px-3 border-r border-white/20">
-            <span className="text-[10px] uppercase font-bold text-blue-200 block">Today's Volume</span>
+            <span className="text-[10px] uppercase font-bold text-blue-200 block">Today&apos;s Volume</span>
             <span className="text-base font-extrabold">₹{dailyStats.bookingValue.toLocaleString('en-IN')}</span>
           </div>
           <div className="text-center px-3">
@@ -503,7 +503,7 @@ export default function SalesmanPortalPage() {
 
             {orderPad.length === 0 ? (
               <div className="py-8 text-center text-slate-400 text-xs">
-                Tap items on the left to add cartons to this retailer's order.
+                Tap items on the left to add cartons to this retailer&apos;s order.
               </div>
             ) : (
               <div className="space-y-3">

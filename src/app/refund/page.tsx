@@ -27,7 +27,7 @@ export default function RefundPolicyPage() {
           <h2 className="font-bold text-base mb-2">1. Order cancellation</h2>
           <ul className="list-disc pl-5 space-y-1">
             <li>Orders can be cancelled free of charge before they are dispatched. Contact us as soon as possible after placing an order you wish to cancel.</li>
-            <li>Once an order is marked "Dispatched," it can no longer be cancelled and must instead be handled as a return (see below).</li>
+            <li>Once an order is marked &quot;Dispatched,&quot; it can no longer be cancelled and must instead be handled as a return (see below).</li>
             <li>We may cancel an order due to stock unavailability, pricing errors, or credit issues; in that case any payment received is refunded in full.</li>
           </ul>
         </section>

@@ -298,7 +298,7 @@ export default function AuthModal() {
               </form>
 
               <div className="text-center pt-2">
-                <span className="text-xs text-slate-400">Don't have a retail store account yet? </span>
+                <span className="text-xs text-slate-400">Don&apos;t have a retail store account yet? </span>
                 <button
                   type="button"
                   onClick={() => openAuthModal('REGISTER')}
